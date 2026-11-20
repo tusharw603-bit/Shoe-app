@@ -1,1166 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SOLE | Sneaker Store</title>
-
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --black: #111111;
-    --white: #ffffff;
-    --gray: #f5f5f5;
-    --muted: #777;
-    --accent: #ff5b35;
-}
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #fff;
-    color: var(--black);
-}
-
-button {
-    cursor: pointer;
-    font-family: inherit;
-}
-
-header {
-    padding: 20px 6%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #eee;
-    position: sticky;
-    top: 0;
-    background: white;
-    z-index: 100;
-}
-
-.logo {
-    font-size: 28px;
-    font-weight: 900;
-    letter-spacing: -2px;
-}
-
-.logo span {
-    color: var(--accent);
-}
-
-nav {
-    display: flex;
-    gap: 30px;
-}
-
-nav a {
-    text-decoration: none;
-    color: #333;
-    font-size: 14px;
-}
-
-.header-actions {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-}
-
-.icon-button {
-    border: none;
-    background: white;
-    font-size: 20px;
-}
-
-.cart-button {
-    background: black;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 30px;
-    border: none;
-}
-
-.hero {
-    margin: 25px 5%;
-    min-height: 430px;
-    border-radius: 25px;
-    overflow: hidden;
-    background: #e9e9e9;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    padding: 40px;
-}
-
-.hero-text h1 {
-    font-size: clamp(40px, 6vw, 80px);
-    line-height: 0.95;
-    font-weight: 900;
-    letter-spacing: -4px;
-}
-
-.hero-text p {
-    margin: 20px 0;
-    color: #555;
-    max-width: 350px;
-    line-height: 1.6;
-}
-
-.hero-text button {
-    padding: 15px 25px;
-    border: none;
-    background: black;
-    color: white;
-    border-radius: 30px;
-}
-
-.hero img {
-    width: 100%;
-    height: 350px;
-    object-fit: contain;
-}
-
-.section {
-    padding: 30px 6%;
-}
-
-.section-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-}
-
-.section-heading h2 {
-    font-size: 30px;
-    letter-spacing: -1px;
-}
-
-.search-box {
-    width: 100%;
-    max-width: 400px;
-    padding: 14px 18px;
-    border: 1px solid #ddd;
-    border-radius: 30px;
-    margin-bottom: 25px;
-    font-size: 15px;
-}
-
-.categories {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    margin-bottom: 25px;
-}
-
-.category {
-    padding: 12px 22px;
-    border-radius: 30px;
-    border: 1px solid #ddd;
-    background: white;
-    white-space: nowrap;
-}
-
-.category.active {
-    background: black;
-    color: white;
-}
-
-.products {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-}
-
-.product-card {
-    background: white;
-    border-radius: 18px;
-    overflow: hidden;
-    transition: transform 0.2s;
-}
-
-.product-card:hover {
-    transform: translateY(-5px);
-}
-
-.product-image {
-    height: 250px;
-    background: #f3f3f3;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.product-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.heart {
-    position: absolute;
-    right: 15px;
-    top: 15px;
-    background: white;
-    border: none;
-    border-radius: 50%;
-    width: 38px;
-    height: 38px;
-    font-size: 20px;
-}
-
-.heart.liked {
-    color: red;
-}
-
-.product-info {
-    padding: 15px 5px;
-}
-
-.product-info h3 {
-    font-size: 16px;
-    margin-bottom: 8px;
-}
-
-.product-info p {
-    color: var(--muted);
-    font-size: 13px;
-    margin-bottom: 10px;
-}
-
-.product-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.price {
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.add-button {
-    background: black;
-    color: white;
-    border: none;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    font-size: 22px;
-}
-
-.banner {
-    margin: 50px 6%;
-    background: #111;
-    color: white;
-    padding: 45px;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-.banner h2 {
-    font-size: 40px;
-}
-
-.banner p {
-    color: #aaa;
-    margin-top: 12px;
-}
-
-.banner button {
-    background: var(--accent);
-    color: white;
-    border: none;
-    padding: 15px 25px;
-    border-radius: 30px;
-}
-
-footer {
-    background: #f5f5f5;
-    padding: 35px 6%;
-    text-align: center;
-    color: #777;
-}
-
-/* CART */
-
-.cart-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 200;
-    display: none;
-}
-
-.cart-overlay.open {
-    display: block;
-}
-
-.cart-panel {
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: min(450px, 100%);
-    background: white;
-    padding: 25px;
-    overflow-y: auto;
-}
-
-.cart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-}
-
-.cart-header h2 {
-    font-size: 25px;
-}
-
-.close-cart {
-    background: none;
-    border: none;
-    font-size: 30px;
-}
-
-.cart-item {
-    display: flex;
-    gap: 15px;
-    padding: 15px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.cart-item img {
-    width: 90px;
-    height: 90px;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-.cart-item-details {
-    flex: 1;
-}
-
-.cart-item-details h3 {
-    font-size: 15px;
-    margin-bottom: 5px;
-}
-
-.quantity {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.quantity button {
-    width: 25px;
-    height: 25px;
-    border: 1px solid #ddd;
-    background: white;
-}
-
-.cart-total {
-    margin-top: 25px;
-    font-size: 22px;
-    display: flex;
-    justify-content: space-between;
-    font-weight: bold;
-}
-
-.checkout {
-    width: 100%;
-    padding: 16px;
-    background: black;
-    color: white;
-    border: none;
-    border-radius: 30px;
-    margin-top: 20px;
-    font-size: 16px;
-}
-
-.empty-cart {
-    text-align: center;
-    margin-top: 50px;
-    color: #777;
-}
-
-/* CHECKOUT */
-
-.checkout-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    z-index: 300;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.checkout-modal.open {
-    display: flex;
-}
-
-.checkout-box {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    width: 100%;
-    max-width: 450px;
-}
-
-.checkout-box h2 {
-    margin-bottom: 20px;
-}
-
-.checkout-box input {
-    width: 100%;
-    padding: 14px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-}
-
-.checkout-box button {
-    width: 100%;
-    padding: 15px;
-    background: black;
-    color: white;
-    border: none;
-    border-radius: 30px;
-    margin-top: 10px;
-}
-
-@media (max-width: 900px) {
-    .products {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    nav {
-        display: none;
-    }
-
-    .hero {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-
-    .hero img {
-        height: 250px;
-    }
-
-    .hero-text p {
-        margin: 20px auto;
-    }
-}
-
-@media (max-width: 500px) {
-    header {
-        padding: 15px;
-    }
-
-    .logo {
-        font-size: 24px;
-    }
-
-    .hero {
-        margin: 15px;
-        padding: 25px;
-    }
-
-    .hero-text h1 {
-        font-size: 48px;
-    }
-
-    .product-image {
-        height: 180px;
-    }
-
-    .section {
-        padding: 20px 15px;
-    }
-
-    .banner {
-        margin: 25px 15px;
-        padding: 25px;
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .banner h2 {
-        font-size: 30px;
-    }
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StrideUp – Shoe Store</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: #f6f7fb; color: #1c1c28; }
+    header { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+    .logo { font-size: 1.4rem; font-weight: 800; color: #ff5a3c; }
+    .cart-btn { position: relative; border: none; background: #1c1c28; color: #fff; padding: 10px 16px; border-radius: 999px; cursor: pointer; font-size: .95rem; }
+    .cart-count { background: #ff5a3c; border-radius: 999px; padding: 2px 8px; margin-left: 6px; font-size: .8rem; }
+    .hero { text-align: center; padding: 40px 20px 20px; }
+    .hero h1 { font-size: 2rem; }
+    .hero p { color: #666; margin-top: 8px; }
+    .controls { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 10px 20px 20px; }
+    .controls input, .controls select { padding: 10px 14px; border: 1px solid #ddd; border-radius: 10px; font-size: .95rem; background: #fff; }
+    .controls input { min-width: 220px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; padding: 0 20px 40px; max-width: 1100px; margin: 0 auto; }
+    .card { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,.06); display: flex; flex-direction: column; transition: transform .15s; }
+    .card:hover { transform: translateY(-4px); }
+    .img { height: 160px; display: grid; place-items: center; font-size: 4.5rem; }
+    .info { padding: 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .brand { font-size: .75rem; color: #888; text-transform: uppercase; letter-spacing: .05em; }
+    .name { font-weight: 700; }
+    .price { font-weight: 800; color: #ff5a3c; }
+    .sizes { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0; }
+    .size { border: 1px solid #ddd; background: #fff; border-radius: 8px; padding: 4px 8px; font-size: .8rem; cursor: pointer; }
+    .size.active { background: #1c1c28; color: #fff; border-color: #1c1c28; }
+    .add { margin-top: auto; border: none; background: #ff5a3c; color: #fff; padding: 10px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+    .add:hover { background: #e84a2d; }
+    .empty { grid-column: 1 / -1; text-align: center; color: #888; padding: 40px; }
+
+    /* Cart drawer */
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 20; }
+    .overlay.show { opacity: 1; pointer-events: auto; }
+    .drawer { position: fixed; top: 0; right: -420px; width: min(400px, 100%); height: 100%; background: #fff; z-index: 30; transition: right .25s; display: flex; flex-direction: column; }
+    .drawer.open { right: 0; }
+    .drawer-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #eee; }
+    .close { border: none; background: none; font-size: 1.5rem; cursor: pointer; }
+    .items { flex: 1; overflow-y: auto; padding: 10px 20px; }
+    .item { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+    .item .thumb { font-size: 2rem; }
+    .item .meta { flex: 1; font-size: .9rem; }
+    .qty { display: flex; align-items: center; gap: 6px; }
+    .qty button { width: 26px; height: 26px; border-radius: 50%; border: 1px solid #ddd; background: #fff; cursor: pointer; }
+    .drawer-foot { padding: 16px 20px; border-top: 1px solid #eee; }
+    .total { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.1rem; margin-bottom: 12px; }
+    .checkout { width: 100%; border: none; background: #1c1c28; color: #fff; padding: 12px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+    footer { text-align: center; padding: 20px; color: #888; font-size: .85rem; }
+  </style>
 </head>
-
 <body>
+  <header>
+    <div class="logo">👟 StrideUp</div>
+    <button class="cart-btn" id="openCart">Cart <span class="cart-count" id="cartCount">0</span></button>
+  </header>
 
-<header>
+  <section class="hero">
+    <h1>Find your perfect pair</h1>
+    <p>Sneakers, running shoes, boots &amp; more.</p>
+  </section>
 
-    <div class="logo">SOLE<span>.</span></div>
+  <div class="controls">
+    <input type="search" id="search" placeholder="Search shoes..." />
+    <select id="category">
+      <option value="all">All categories</option>
+      <option value="Sneakers">Sneakers</option>
+      <option value="Running">Running</option>
+      <option value="Boots">Boots</option>
+      <option value="Formal">Formal</option>
+    </select>
+    <select id="sort">
+      <option value="default">Sort: Featured</option>
+      <option value="low">Price: Low to High</option>
+      <option value="high">Price: High to Low</option>
+    </select>
+  </div>
 
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#shop">Shop</a>
-        <a href="#new">New Arrivals</a>
-        <a href="#sale">Sale</a>
-    </nav>
+  <main class="grid" id="grid"></main>
 
-    <div class="header-actions">
-        <button class="icon-button" onclick="toggleCart()">🛒</button>
-        <button class="cart-button" onclick="toggleCart()">
-            Cart <span id="cartCount">0</span>
-        </button>
+  <div class="overlay" id="overlay"></div>
+  <aside class="drawer" id="drawer">
+    <div class="drawer-head"><h2>Your Cart</h2><button class="close" id="closeCart">&times;</button></div>
+    <div class="items" id="items"></div>
+    <div class="drawer-foot">
+      <div class="total"><span>Total</span><span id="total">$0.00</span></div>
+      <button class="checkout" id="checkout">Checkout</button>
     </div>
-
-</header>
-
-<!-- HERO -->
-
-<section class="hero" id="home">
-
-    <div class="hero-text">
-
-        <p>NEW COLLECTION 2026</p>
-
-        <h1>STEP INTO<br>YOUR STYLE.</h1>
-
-        <p>
-            Discover sneakers made for movement,
-            comfort and everyday style.
-        </p>
-
-        <button onclick="scrollToShop()">
-            Shop Collection →
-        </button>
-
-    </div>
-
-    <img
-        src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=85"
-        alt="Red sneaker"
-    >
-
-</section>
-
-<!-- SHOP -->
-
-<section class="section" id="shop">
-
-    <div class="section-heading">
-
-        <h2>Trending Sneakers</h2>
-
-    </div>
-
-    <input
-        type="search"
-        id="search"
-        class="search-box"
-        placeholder="🔍 Search sneakers..."
-    >
-
-    <div class="categories">
-
-        <button class="category active" onclick="filterCategory('All',this)">
-            All Shoes
-        </button>
-
-        <button class="category" onclick="filterCategory('Running',this)">
-            Running
-        </button>
-
-        <button class="category" onclick="filterCategory('Lifestyle',this)">
-            Lifestyle
-        </button>
-
-        <button class="category" onclick="filterCategory('Basketball',this)">
-            Basketball
-        </button>
-
-        <button class="category" onclick="filterCategory('Training',this)">
-            Training
-        </button>
-
-    </div>
-
-    <div class="products" id="products"></div>
-
-</section>
-
-<!-- PROMOTION -->
-
-<section class="banner" id="sale">
-
-    <div>
-        <h2>UP TO 40% OFF</h2>
-        <p>Upgrade your sneaker collection today.</p>
-    </div>
-
-    <button onclick="scrollToShop()">
-        Explore Deals
-    </button>
-
-</section>
-
-<footer>
-    <h2>SOLE.</h2>
-    <p>Designed for every step.</p>
-    <p style="margin-top:15px">
-        © 2026 SOLE Sneaker Store — Demo Shopping App
-    </p>
-</footer>
-
-<!-- CART -->
-
-<div class="cart-overlay" id="cartOverlay">
-
-    <div class="cart-panel">
-
-        <div class="cart-header">
-
-            <h2>Your Cart 🛒</h2>
-
-            <button class="close-cart" onclick="toggleCart()">×</button>
-
-        </div>
-
-        <div id="cartItems"></div>
-
-        <div class="cart-total">
-            <span>Total</span>
-            <span id="cartTotal">₹0</span>
-        </div>
-
-        <button class="checkout" onclick="openCheckout()">
-            Proceed to Checkout
-        </button>
-
-    </div>
-
-</div>
-
-<!-- CHECKOUT -->
-
-<div class="checkout-modal" id="checkoutModal">
-
-    <div class="checkout-box">
-
-        <h2>Checkout 📦</h2>
-
-        <p>Enter your delivery details.</p>
-
-        <input id="customerName" placeholder="Full name">
-
-        <input id="customerPhone" placeholder="Phone number" type="tel">
-
-        <input id="customerAddress" placeholder="Delivery address">
-
-        <input id="customerCity" placeholder="City">
-
-        <button onclick="placeOrder()">Place Demo Order</button>
-
-        <button onclick="closeCheckout()" style="background:#777">
-            Cancel
-        </button>
-
-    </div>
-
-</div>
-
-<script>
-
-// ============================
-// PRODUCTS
-// ============================
-
-const products = [
-
-{
-id: 1,
-name: "Air Runner Pro",
-category: "Running",
-price: 4999,
-color: "Red / White",
-image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80"
-},
-
-{
-id: 2,
-name: "Street Classic",
-category: "Lifestyle",
-price: 3499,
-color: "White",
-image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=700&q=80"
-},
-
-{
-id: 3,
-name: "Urban Sport",
-category: "Training",
-price: 4299,
-color: "Black",
-image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=700&q=80"
-},
-
-{
-id: 4,
-name: "Cloud Walk",
-category: "Running",
-price: 5999,
-color: "Grey",
-image: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?auto=format&fit=crop&w=700&q=80"
-},
-
-{
-id: 5,
-name: "Retro High",
-category: "Lifestyle",
-price: 6999,
-color: "Black / White",
-image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=700&q=80"
-},
-
-{
-id: 6,
-name: "Court Legend",
-category: "Basketball",
-price: 7999,
-color: "White / Blue",
-image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=700&q=80"
-},
-
-{
-id: 7,
-name: "Speed Flex",
-category: "Running",
-price: 3899,
-color: "Blue",
-image: "https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=700&q=80"
-},
-
-{
-id: 8,
-name: "Daily Comfort",
-category: "Lifestyle",
-price: 2999,
-color: "Cream",
-image: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=700&q=80"
-}
-
-];
-
-// ============================
-// APP STATE
-// ============================
-
-let cart = [];
-
-let currentCategory = "All";
-
-let favorites = [];
-
-// ============================
-// DISPLAY PRODUCTS
-// ============================
-
-function displayProducts(list) {
-
-const container = document.getElementById("products");
-
-container.innerHTML = "";
-
-if (list.length === 0) {
-
-container.innerHTML =
-"<p>No sneakers found.</p>";
-
-return;
-
-}
-
-list.forEach(product => {
-
-const card = document.createElement("div");
-
-card.className = "product-card";
-
-card.innerHTML = `
-
-<div class="product-image">
-
-<img
-src="${product.image}"
-alt="${product.name}"
-loading="lazy"
->
-
-<button
-class="heart ${favorites.includes(product.id) ? "liked" : ""}"
-onclick="toggleFavorite(${product.id})"
->
-${favorites.includes(product.id) ? "♥" : "♡"}
-</button>
-
-</div>
-
-<div class="product-info">
-
-<h3>${product.name}</h3>
-
-<p>${product.category} · ${product.color}</p>
-
-<div class="product-bottom">
-
-<span class="price">
-₹${product.price.toLocaleString("en-IN")}
-</span>
-
-<button
-class="add-button"
-onclick="addToCart(${product.id})"
->
-+
-</button>
-
-</div>
-
-</div>
-
-`;
-
-container.appendChild(card);
-
-});
-
-}
-
-// ============================
-// CATEGORY FILTER
-// ============================
-
-function filterCategory(category, button) {
-
-currentCategory = category;
-
-document.querySelectorAll(".category")
-.forEach(btn => btn.classList.remove("active"));
-
-button.classList.add("active");
-
-searchProducts();
-
-}
-
-// ============================
-// SEARCH
-// ============================
-
-document.getElementById("search")
-.addEventListener("input", searchProducts);
-
-function searchProducts() {
-
-const search =
-document.getElementById("search")
-.value.toLowerCase();
-
-const filtered = products.filter(product => {
-
-const categoryMatch =
-currentCategory === "All" ||
-product.category === currentCategory;
-
-const searchMatch =
-product.name.toLowerCase().includes(search) ||
-product.category.toLowerCase().includes(search) ||
-product.color.toLowerCase().includes(search);
-
-return categoryMatch && searchMatch;
-
-});
-
-displayProducts(filtered);
-
-}
-
-// ============================
-// FAVORITES
-// ============================
-
-function toggleFavorite(id) {
-
-if (favorites.includes(id)) {
-
-favorites = favorites.filter(item => item !== id);
-
-} else {
-
-favorites.push(id);
-
-}
-
-searchProducts();
-
-}
-
-// ============================
-// ADD TO CART
-// ============================
-
-function addToCart(id) {
-
-const product = products.find(item => item.id === id);
-
-const existing = cart.find(item => item.id === id);
-
-if (existing) {
-
-existing.quantity++;
-
-} else {
-
-cart.push({
-...product,
-quantity: 1
-});
-
-}
-
-updateCart();
-
-}
-
-// ============================
-// CART UPDATE
-// ============================
-
-function updateCart() {
-
-document.getElementById("cartCount")
-.textContent = cart.reduce(
-(sum, item) => sum + item.quantity,
-0
-);
-
-const container =
-document.getElementById("cartItems");
-
-container.innerHTML = "";
-
-if (cart.length === 0) {
-
-container.innerHTML = `
-<div class="empty-cart">
-<h3>Your cart is empty</h3>
-<p>Find your perfect pair!</p>
-</div>
-`;
-
-}
-
-cart.forEach(item => {
-
-const div = document.createElement("div");
-
-div.className = "cart-item";
-
-div.innerHTML = `
-
-<img src="${item.image}" alt="${item.name}">
-
-<div class="cart-item-details">
-
-<h3>${item.name}</h3>
-
-<p>₹${item.price.toLocaleString("en-IN")}</p>
-
-<div class="quantity">
-
-<button onclick="changeQuantity(${item.id},-1)">−</button>
-
-<span>${item.quantity}</span>
-
-<button onclick="changeQuantity(${item.id},1)">+</button>
-
-</div>
-
-</div>
-
-`;
-
-container.appendChild(div);
-
-});
-
-const total = cart.reduce(
-(sum, item) => sum + item.price * item.quantity,
-0
-);
-
-document.getElementById("cartTotal")
-.textContent = "₹" + total.toLocaleString("en-IN");
-
-}
-
-// ============================
-// QUANTITY
-// ============================
-
-function changeQuantity(id, amount) {
-
-const item = cart.find(item => item.id === id);
-
-if (!item) return;
-
-item.quantity += amount;
-
-if (item.quantity <= 0) {
-
-cart = cart.filter(item => item.id !== id);
-
-}
-
-updateCart();
-
-}
-
-// ============================
-// CART OPEN/CLOSE
-// ============================
-
-function toggleCart() {
-
-document.getElementById("cartOverlay")
-.classList.toggle("open");
-
-}
-
-document.getElementById("cartOverlay")
-.addEventListener("click", function(event) {
-
-if (event.target === this) {
-
-toggleCart();
-
-}
-
-});
-
-// ============================
-// CHECKOUT
-// ============================
-
-function openCheckout() {
-
-if (cart.length === 0) {
-
-alert("Your cart is empty!");
-
-return;
-
-}
-
-document.getElementById("checkoutModal")
-.classList.add("open");
-
-}
-
-function closeCheckout() {
-
-document.getElementById("checkoutModal")
-.classList.remove("open");
-
-}
-
-// ============================
-// PLACE DEMO ORDER
-// ============================
-
-function placeOrder() {
-
-const name =
-document.getElementById("customerName").value.trim();
-
-const phone =
-document.getElementById("customerPhone").value.trim();
-
-const address =
-document.getElementById("customerAddress").value.trim();
-
-const city =
-document.getElementById("customerCity").value.trim();
-
-if (!name || !phone || !address || !city) {
-
-alert("Please fill all delivery details.");
-
-return;
-
-}
-
-const orderNumber =
-"SOLE-" + Math.floor(100000 + Math.random() * 900000);
-
-const total = cart.reduce(
-(sum, item) => sum + item.price * item.quantity,
-0
-);
-
-alert(
-
-"🎉 Order placed successfully!\n\n" +
-"Order ID: " + orderNumber + "\n" +
-"Customer: " + name + "\n" +
-"City: " + city + "\n" +
-"Total: ₹" + total.toLocaleString("en-IN") +
-"\n\nThis is a demo order. No payment was collected."
-
-);
-
-cart = [];
-
-updateCart();
-
-closeCheckout();
-
-toggleCart();
-
-}
-
-// ============================
-// NAVIGATION
-// ============================
-
-function scrollToShop() {
-
-document.getElementById("shop")
-.scrollIntoView({
-behavior: "smooth"
-});
-
-}
-
-// ============================
-// INITIALIZE
-// ============================
-
-displayProducts(products);
-
-updateCart();
-
-</script>
-
+  </aside>
+
+  <footer>&copy; 2026 StrideUp. Demo project.</footer>
+
+  <script>
+    const products = [
+      { id: 1, name: "AirFlex Runner", brand: "StrideUp", category: "Running", price: 89.99, emoji: "👟", bg: "#ffe3dc" },
+      { id: 2, name: "Urban Classic", brand: "StrideUp", category: "Sneakers", price: 69.5, emoji: "👟", bg: "#dce9ff" },
+      { id: 3, name: "Trail Master Boot", brand: "Summit", category: "Boots", price: 129.0, emoji: "🥾", bg: "#e5f5dc" },
+      { id: 4, name: "Oxford Prime", brand: "Gentry", category: "Formal", price: 149.99, emoji: "👞", bg: "#f1e6dc" },
+      { id: 5, name: "Speed Pro 2", brand: "Velo", category: "Running", price: 109.0, emoji: "👟", bg: "#fff4cc" },
+      { id: 6, name: "Street Low Top", brand: "Velo", category: "Sneakers", price: 59.0, emoji: "👟", bg: "#f0dcff" },
+      { id: 7, name: "Hiker Pro", brand: "Summit", category: "Boots", price: 139.0, emoji: "🥾", bg: "#dcf7f3" },
+      { id: 8, name: "Derby Elite", brand: "Gentry", category: "Formal", price: 119.0, emoji: "👞", bg: "#e8e8e8" }
+    ];
+    const sizeOptions = [6, 7, 8, 9, 10, 11];
+
+    let cart = JSON.parse(localStorage.getItem("shoeCart") || "[]");
+    const selectedSize = {};
+
+    const $ = (id) => document.getElementById(id);
+    const money = (n) => "$" + n.toFixed(2);
+
+    function renderProducts() {
+      const q = $("search").value.trim().toLowerCase();
+      const cat = $("category").value;
+      const sort = $("sort").value;
+
+      let list = products.filter(p =>
+        (cat === "all" || p.category === cat) &&
+        (p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q))
+      );
+      if (sort === "low") list.sort((a, b) => a.price - b.price);
+      if (sort === "high") list.sort((a, b) => b.price - a.price);
+
+      $("grid").innerHTML = list.length ? list.map(p => `
+        <div class="card">
+          <div class="img" style="background:${p.bg}">${p.emoji}</div>
+          <div class="info">
+            <span class="brand">${p.brand} · ${p.category}</span>
+            <span class="name">${p.name}</span>
+            <span class="price">${money(p.price)}</span>
+            <div class="sizes">
+              ${sizeOptions.map(s => `<button class="size ${selectedSize[p.id] === s ? "active" : ""}" onclick="pickSize(${p.id}, ${s})">${s}</button>`).join("")}
+            </div>
+            <button class="add" onclick="addToCart(${p.id})">Add to Cart</button>
+          </div>
+        </div>`).join("") : `<div class="empty">No shoes found.</div>`;
+    }
+
+    function pickSize(id, size) { selectedSize[id] = size; renderProducts(); }
+
+    function addToCart(id) {
+      const size = selectedSize[id];
+      if (!size) { alert("Please select a size first."); return; }
+      const existing = cart.find(i => i.id === id && i.size === size);
+      if (existing) existing.qty++;
+      else cart.push({ id, size, qty: 1 });
+      saveCart(); openCart();
+    }
+
+    function changeQty(index, delta) {
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) cart.splice(index, 1);
+      saveCart();
+    }
+
+    function saveCart() {
+      localStorage.setItem("shoeCart", JSON.stringify(cart));
+      renderCart();
+    }
+
+    function renderCart() {
+      const count = cart.reduce((s, i) => s + i.qty, 0);
+      $("cartCount").textContent = count;
+      let total = 0;
+      $("items").innerHTML = cart.length ? cart.map((item, idx) => {
+        const p = products.find(x => x.id === item.id);
+        total += p.price * item.qty;
+        return `
+          <div class="item">
+            <div class="thumb">${p.emoji}</div>
+            <div class="meta"><strong>${p.name}</strong><br>Size ${item.size} · ${money(p.price)}</div>
+            <div class="qty">
+              <button onclick="changeQty(${idx}, -1)">−</button>
+              <span>${item.qty}</span>
+              <button onclick="changeQty(${idx}, 1)">+</button>
+            </div>
+          </div>`;
+      }).join("") : `<p class="empty">Your cart is empty.</p>`;
+      $("total").textContent = money(total);
+    }
+
+    function openCart() { $("drawer").classList.add("open"); $("overlay").classList.add("show"); }
+    function closeCart() { $("drawer").classList.remove("open"); $("overlay").classList.remove("show"); }
+
+    $("openCart").onclick = openCart;
+    $("closeCart").onclick = closeCart;
+    $("overlay").onclick = closeCart;
+    $("checkout").onclick = () => {
+      if (!cart.length) return alert("Your cart is empty.");
+      alert("Thanks for your order! (Demo only)");
+      cart = []; saveCart(); closeCart();
+    };
+    ["search", "category", "sort"].forEach(id => $(id).addEventListener("input", renderProducts));
+
+    renderProducts();
+    renderCart();
+  </script>
 </body>
 </html>
