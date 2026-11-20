@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SoleMate - Shoe Store</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #222;
+}
+
+header {
+    background: #111;
+    color: white;
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.cart-button {
+    background: #fff;
+    color: #111;
+    padding: 10px 15px;
+    border-radius: 25px;
+    border: none;
+    font-weight: bold;
+}
+
+.hero {
+    background: linear-gradient(135deg, #111, #444);
+    color: white;
+    padding: 35px 20px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 35px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #ddd;
+}
+
+.search-box {
+    padding: 20px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 16px;
+}
+
+.categories {
+    display: flex;
+    gap: 10px;
+    padding: 0 15px 20px;
+    overflow-x: auto;
+}
+
+.categories button {
+    padding: 10px 18px;
+    border: none;
+    background: white;
+    border-radius: 25px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.categories button.active {
+    background: #111;
+    color: white;
+}
+
+.section-title {
+    padding: 0 20px 15px;
+    font-size: 22px;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 0 15px 30px;
+}
+
+.product {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.product-image {
+    height: 170px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 95px;
+    background: linear-gradient(135deg, #eee, #ddd);
+}
+
+.product-info {
+    padding: 12px;
+}
+
+.product-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.product-category {
+    color: #888;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.price {
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+.product-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.add-button {
+    flex: 1;
+    padding: 10px;
+    background: #111;
+    color: white;
+    border: none;
+    border-radius: 8px;
+}
+
+.favorite {
+    width: 40px;
+    background: #eee;
+    border: none;
+    border-radius: 8px;
+    font-size: 20px;
+}
+
+.favorite.active {
+    color: red;
+}
+
+.cart-panel {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 100;
+    display: none;
+    justify-content: flex-end;
+}
+
+.cart-panel.open {
+    display: flex;
+}
+
+.cart-content {
+    width: 90%;
+    max-width: 400px;
+    background: white;
+    height: 100%;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid #ddd;
+    gap: 10px;
+}
+
+.cart-item button {
+    padding: 5px 10px;
+    border: none;
+    background: #eee;
+    border-radius: 5px;
+}
+
+.total {
+    margin-top: 25px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.checkout {
+    width: 100%;
+    background: #111;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    margin-top: 15px;
+    font-size: 16px;
+}
+
+.close {
+    background: transparent;
+    border: none;
+    font-size: 25px;
+}
+
+footer {
+    text-align: center;
+    background: #111;
+    color: #aaa;
+    padding: 25px;
+}
+
+@media (min-width: 700px) {
+    .products {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 1000px;
+        margin: auto;
+    }
+
+    .product-image {
+        height: 220px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">👟 SoleMate</div>
+
+    <button class="cart-button" onclick="openCart()">
+        🛒 Cart <span id="cartCount">0</span>
+    </button>
+</header>
+
+<section class="hero">
+    <h1>Step Into Style</h1>
+    <p>Discover your perfect pair.</p>
+</section>
+
+<div class="search-box">
+    <input
+        type="text"
+        id="search"
+        placeholder="Search sneakers..."
+        oninput="renderProducts()"
+    >
+</div>
+
+<div class="categories">
+    <button class="active" onclick="filterCategory('All', this)">All</button>
+    <button onclick="filterCategory('Running', this)">Running</button>
+    <button onclick="filterCategory('Casual', this)">Casual</button>
+    <button onclick="filterCategory('Sports', this)">Sports</button>
+    <button onclick="filterCategory('Basketball', this)">Basketball</button>
+</div>
+
+<h2 class="section-title">Popular Shoes</h2>
+
+<div class="products" id="products"></div>
+
+<!-- Shopping Cart -->
+
+<div class="cart-panel" id="cartPanel">
+
+    <div class="cart-content">
+
+        <div class="cart-header">
+            <h2>🛒 Your Cart</h2>
+            <button class="close" onclick="closeCart()">✕</button>
+        </div>
+
+        <div id="cartItems"></div>
+
+        <div class="total" id="cartTotal">
+            Total: ₹0
+        </div>
+
+        <button class="checkout" onclick="checkout()">
+            Checkout
+        </button>
+
+    </div>
+
+</div>
+
+<footer>
+    SoleMate Shoes Store<br>
+    Made with HTML, CSS & JavaScript
+</footer>
+
+<script>
+
+// Product database
+
+const shoes = [
+    {
+        id: 1,
+        name: "Air Runner",
+        category: "Running",
+        price: 2999,
+        emoji: "👟",
+        color: "#e8e8e8"
+    },
+    {
+        id: 2,
+        name: "Street Classic",
+        category: "Casual",
+        price: 2499,
+        emoji: "👞",
+        color: "#f2d5a0"
+    },
+    {
+        id: 3,
+        name: "Sport Flex",
+        category: "Sports",
+        price: 3499,
+        emoji: "👟",
+        color: "#c8e6ff"
+    },
+    {
+        id: 4,
+        name: "Basket Pro",
+        category: "Basketball",
+        price: 4999,
+        emoji: "🏀",
+        color: "#ffdfb0"
+    },
+    {
+        id: 5,
+        name: "Urban Sneakers",
+        category: "Casual",
+        price: 1999,
+        emoji: "👟",
+        color: "#d9d9d9"
+    },
+    {
+        id: 6,
+        name: "Speed Runner",
+        category: "Running",
+        price: 3999,
+        emoji: "👟",
+        color: "#d0ffd0"
+    },
+    {
+        id: 7,
+        name: "High Top",
+        category: "Basketball",
+        price: 4599,
+        emoji: "👞",
+        color: "#ffcccc"
+    },
+    {
+        id: 8,
+        name: "Daily Comfort",
+        category: "Sports",
+        price: 1799,
+        emoji: "👟",
+        color: "#d8ccff"
+    }
+];
+
+let cart = [];
+
+let currentCategory = "All";
+
+let favorites = [];
+
+// Display products
+
+function renderProducts() {
+
+    const container = document.getElementById("products");
+
+    const search = document
+        .getElementById("search")
+        .value.toLowerCase();
+
+    const filtered = shoes.filter(shoe => {
+
+        const matchesCategory =
+            currentCategory === "All" ||
+            shoe.category === currentCategory;
+
+        const matchesSearch =
+            shoe.name.toLowerCase().includes(search);
+
+        return matchesCategory && matchesSearch;
+
+    });
+
+    container.innerHTML = "";
+
+    filtered.forEach(shoe => {
+
+        const isFavorite = favorites.includes(shoe.id);
+
+        const card = document.createElement("div");
+
+        card.className = "product";
+
+        card.innerHTML = `
+            <div class="product-image"
+                 style="background:${shoe.color}">
+                ${shoe.emoji}
+            </div>
+
+            <div class="product-info">
+
+                <div class="product-name">
+                    ${shoe.name}
+                </div>
+
+                <div class="product-category">
+                    ${shoe.category}
+                </div>
+
+                <div class="price">
+                    ₹${shoe.price.toLocaleString("en-IN")}
+                </div>
+
+                <div class="product-actions">
+
+                    <button class="add-button"
+                        onclick="addToCart(${shoe.id})">
+                        Add to Cart
+                    </button>
+
+                    <button class="favorite ${isFavorite ? "active" : ""}"
+                        onclick="toggleFavorite(${shoe.id})">
+                        ${isFavorite ? "❤️" : "♡"}
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+        container.appendChild(card);
+
+    });
+
+}
+
+// Category filter
+
+function filterCategory(category, button) {
+
+    currentCategory = category;
+
+    document
+        .querySelectorAll(".categories button")
+        .forEach(btn => btn.classList.remove("active"));
+
+    button.classList.add("active");
+
+    renderProducts();
+
+}
+
+// Add to cart
+
+function addToCart(id) {
+
+    const shoe = shoes.find(item => item.id === id);
+
+    const existing = cart.find(item => item.id === id);
+
+    if (existing) {
+        existing.quantity++;
+    } else {
+        cart.push({
+            ...shoe,
+            quantity: 1
+        });
+    }
+
+    updateCart();
+
+}
+
+// Favorites
+
+function toggleFavorite(id) {
+
+    if (favorites.includes(id)) {
+
+        favorites = favorites.filter(item => item !== id);
+
+    } else {
+
+        favorites.push(id);
+
+    }
+
+    renderProducts();
+
+}
+
+// Update cart
+
+function updateCart() {
+
+    document.getElementById("cartCount").innerText =
+        cart.reduce((sum, item) => sum + item.quantity, 0);
+
+    const container = document.getElementById("cartItems");
+
+    container.innerHTML = "";
+
+    cart.forEach(item => {
+
+        const div = document.createElement("div");
+
+        div.className = "cart-item";
+
+        div.innerHTML = `
+            <div>
+                <strong>${item.name}</strong><br>
+                ₹${item.price.toLocaleString("en-IN")}<br>
+
+                <button onclick="changeQuantity(${item.id}, -1)">−</button>
+                ${item.quantity}
+                <button onclick="changeQuantity(${item.id}, 1)">+</button>
+            </div>
+
+            <div>
+                ₹${(item.price * item.quantity).toLocaleString("en-IN")}
+            </div>
+        `;
+
+        container.appendChild(div);
+
+    });
+
+    const total = cart.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+    );
+
+    document.getElementById("cartTotal").innerText =
+        "Total: ₹" + total.toLocaleString("en-IN");
+
+}
+
+// Quantity
+
+function changeQuantity(id, amount) {
+
+    const item = cart.find(item => item.id === id);
+
+    if (!item) return;
+
+    item.quantity += amount;
+
+    if (item.quantity <= 0) {
+
+        cart = cart.filter(item => item.id !== id);
+
+    }
+
+    updateCart();
+
+}
+
+// Open cart
+
+function openCart() {
+
+    document.getElementById("cartPanel")
+        .classList.add("open");
+
+}
+
+// Close cart
+
+function closeCart() {
+
+    document.getElementById("cartPanel")
+        .classList.remove("open");
+
+}
+
+// Checkout demo
+
+function checkout() {
+
+    if (cart.length === 0) {
+
+        alert("Your cart is empty!");
+
+        return;
+
+    }
+
+    const total = cart.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+    );
+
+    alert(
+        "Order demo successful!\n" +
+        "Total: ₹" + total.toLocaleString("en-IN") +
+        "\n\nThis is a demo app. No real payment was made."
+    );
+
+    cart = [];
+
+    updateCart();
+
+    closeCart();
+
+}
+
+// Initialize
+
+renderProducts();
+
+updateCart();
+
+</script>
+
+</body>
+</html>
